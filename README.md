@@ -439,6 +439,25 @@ Open source licensing cannot guarantee that nobody will falsely claim authorship
 
 ---
 
+## Contributions and making NOOK your own
+
+**You're welcome to contribute, improve NOOK, and customize it to your liking!** 🎉 Whether you're fixing a bug, improving the design, adding a feature, making it more accessible, improving performance, or writing clearer documentation, contributions are welcome.
+
+### How to contribute
+
+1. Open the NOOK repository and read [CONTRIBUTING.md](./CONTRIBUTING.md) first.
+2. Get the project running locally by following the setup instructions above.
+3. Make your changes in a separate branch so your work stays organized.
+4. Test your changes and run `npm test` and `npm run build` where applicable.
+5. Review your changes to make sure you haven't included passwords, private keys, or other secrets.
+6. Submit a pull request explaining what you changed, why it's useful, and how you tested it.
+
+You can also customize your own copy of NOOK for your needs. Please keep the existing license and attribution notices, clearly identify substantial modifications or forks, and follow the terms in [LICENSE](./LICENSE). Contributions are subject to the project's license and contribution guidelines.
+
+No contribution is too small—bug reports, thoughtful suggestions, documentation fixes, and testing help are valuable too. Be respectful to other contributors, and help make NOOK better for everyone!
+
+---
+
 ## Support
 
 If you're stuck:
