@@ -2,6 +2,8 @@
 
 NOOK is the upstream project published at https://github.com/sbdhkfl/NOOK.
 
+The original NOOK project materials are attributed to the repository maintainer, `sbdhkfl`, © 2026, except for third-party components and contributions whose rights remain with their respective holders. This notice does not claim ownership of third-party dependencies, assets, or other separately licensed materials.
+
 The project is licensed under the GNU Affero General Public License v3.0 or later. See [LICENSE](./LICENSE) for the complete terms.
 
 ## Attribution and modified versions
