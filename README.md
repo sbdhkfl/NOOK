@@ -404,9 +404,16 @@ Likely bottlenecks: realtime connections, file storage bandwidth, write-heavy ta
 
 ---
 
-## License
+## License and project attribution
 
-MIT
+NOOK is licensed under the **GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later)**. Read the full terms in [LICENSE](./LICENSE).
+
+This copyleft license allows people to use, study, modify, and redistribute NOOK under its terms. If someone modifies NOOK and lets people use that modified version over a network, the AGPL generally requires them to offer those users the corresponding source code.
+
+**Attribution and forks:** Keep the original copyright and license notices. If you publish a modified version, clearly identify it as a fork or modified version and identify its maintainers; do not present it as the official upstream NOOK project. The NOOK name and logo are not granted for branding or endorsement by the software license.
+
+Open source licensing cannot guarantee that nobody will falsely claim authorship or ownership. It does provide license conditions and preserved notices that help establish provenance. Names and logos may need separate trademark protection; this repository does not claim that a trademark has been registered.
+
 
 ---
 
