@@ -1,0 +1,26 @@
+[supabase]
+  # Local Supabase configuration for NOOK development
+
+[auth]
+  # Email confirmations enabled by default for security
+  enable_email_confirmations = true
+  # Allow sign-ups by default
+  enable_signup = true
+  # Rate limit sign-up attempts
+  external_email_autoconfirm_providers = []
+
+[database]
+  # Postgres configuration
+  # Migration folder is ./supabase/migrations
+
+[api]
+  # Expose the REST and Realtime APIs
+  enabled = true
+
+[storage]
+  # File storage for avatars and media
+  enabled = true
+
+[realtime]
+  # Realtime subscriptions for messages, notifications, etc.
+  enabled = true

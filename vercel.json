@@ -1,0 +1,17 @@
+{
+  "$schema": "https://open.vercel.sh/vercel.json",
+  "version": 2,
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "routes": [
+    { "src": "/(.*)", "dest": "/index.html" }
+  ],
+  "env": {
+    "VITE_SUPABASE_URL": "@supabase_url",
+    "VITE_SUPABASE_ANON_KEY": "@supabase_anon_key",
+    "VITE_APP_URL": "@app_url"
+  }
+}

@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  # Optional local development database using PostgreSQL directly.
+  # NOOK primarily uses Supabase (managed). This is only if you want
+  # a local Postgres instance for development without Supabase CLI.
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: nook
+      POSTGRES_USER: nook
+      POSTGRES_PASSWORD: nook
+    ports:
+      - "5432:5432"
+    volumes:
+      - nook_data:/var/lib/postgresql/data
+
+volumes:
+  nook_data:
