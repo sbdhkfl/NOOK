@@ -32,7 +32,7 @@ All data is stored persistently in PostgreSQL. There is **no hardcoded limit on 
 | State | Zustand | Lightweight state management |
 | Forms | React Hook Form + Zod | Validation and easy form handling |
 | Testing | Vitest + Testing Library | Unit, integration, and UI tests |
-| Deployment | Vercel (frontend), Supabase (backend) | Free tiers available, simple configuration |
+| Deployment | Any compatible hosting service | Build and deploy the frontend; configure the backend and environment variables separately |
 
 Supabase was chosen because it bundles PostgreSQL, auth, realtime, and storage in one managed service with **database-level security policies (RLS)**. This means private data is protected by the database itself, not just by the frontend.
 
@@ -52,7 +52,6 @@ NOOK/
 ├── index.html                 # Entry HTML
 ├── .env.example               # Environment variable placeholders (copy to .env)
 ├── .gitignore                 # Files ignored by Git
-├── vercel.json                # Vercel deployment config
 ├── supabase/
 │   ├── config.toml            # Supabase local dev config
 │   └── migrations/
@@ -251,57 +250,90 @@ npm run preview
 
 ---
 
-## How to deploy it to Vercel
+## How to deploy NOOK using VS Code
 
-Vercel hosts the frontend for free. Supabase hosts the backend/database separately (also has a free tier).
+You can deploy NOOK to any hosting service that supports a Vite/React frontend. The exact button names vary by provider, but the overall process is similar.
 
-1. Push your code to a GitHub repository.
-2. Go to https://vercel.com and sign up.
-3. Click **Add New → Project** and import your GitHub repo.
-4. Vercel will detect Vite. Use these settings:
-   - **Framework preset:** Vite
-   - **Build command:** `npm run build`
-   - **Output directory:** `dist`
-   - **Install command:** `npm install`
-5. Under **Environment Variables**, add:
-   - `VITE_SUPABASE_URL` = your Supabase project URL
-   - `VITE_SUPABASE_ANON_KEY` = your Supabase anon key
-   - `VITE_APP_URL` = your Vercel domain (e.g. `https://your-app.vercel.app`)
-6. Click **Deploy**.
+### 1. Prepare the project
 
-Success: Vercel builds and deploys. You get a live URL.
+1. Open the `NOOK` folder in VS Code.
+2. Open **Terminal → New Terminal**.
+3. Install dependencies:
 
-**Important:** In your Supabase dashboard, go to **Authentication → URL Configuration** and add your Vercel domain to **Redirect URLs** (e.g. `https://your-app.vercel.app/*`) so authentication callbacks work.
+   ```bash
+   npm install
+   ```
 
----
+4. Configure your production backend and environment variables. Follow the backend setup instructions earlier in this README.
+5. Test the production build:
 
-## How to deploy it to Netlify if supported
+   ```bash
+   npm run build
+   ```
 
-Netlify is also supported. Create a `netlify.toml` if you want to use Netlify:
+   Continue only after the build completes successfully. The compiled frontend files will be in the `dist` folder.
 
-```toml
-[build]
-  command = "npm run build"
-  publish = "dist"
+### 2. Choose a compatible hosting service
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+Choose a hosting service that supports static frontend builds and lets you configure environment variables. In its project setup, use these settings where the service asks for them:
+
+- **Project folder:** the root `NOOK` folder.
+- **Install command:** `npm install`
+- **Build command:** `npm run build`
+- **Published/output folder:** `dist`
+- **Runtime:** use a supported current Node.js version for the build.
+
+If the service connects to a Git repository, select the repository containing NOOK and its default branch. If it accepts a manual upload instead, upload the contents of `dist` after a successful production build. Git-based deployment is usually easier to maintain because future updates can be deployed from new commits.
+
+### 3. Add production environment variables
+
+In the hosting service's project settings, add the required frontend environment variables using the values for your production backend:
+
+```text
+VITE_SUPABASE_URL=your-production-project-url
+VITE_SUPABASE_ANON_KEY=your-public-anon-key
+VITE_APP_URL=https://your-deployed-app-address
 ```
 
-Then connect your GitHub repo to Netlify and add the same environment variables.
+Replace the example values with your actual configuration. Do not put private service-role keys, passwords, or other server secrets into frontend variables. Variables prefixed with `VITE_` are included in the browser build and must not contain secrets.
 
-Note: This project is configured primarily for Vercel via `vercel.json`. Netlify works but requires the `netlify.toml` above.
+If you change environment variables, trigger a new build and deployment.
 
----
+### 4. Configure backend access
 
-## How to configure a domain
+In your backend's authentication settings, add the deployed app's address to the allowed site and redirect URL settings. Configure storage permissions, database policies, and any required email settings for production.
 
-1. Buy a domain from any registrar.
-2. In Vercel: go to your project → **Settings → Domains** → add your domain.
-3. Follow Vercel's DNS instructions (add CNAME or A records at your registrar).
-4. Vercel automatically provisions HTTPS.
+The frontend and backend are separate parts of NOOK. Deploying the frontend does not automatically create or deploy the database, authentication, storage, or realtime services.
+
+### 5. Verify the live application
+
+After deployment finishes:
+
+1. Open the live address provided by your hosting service.
+2. Register and sign in with a test account.
+3. Test creating a post, editing your own content, and sending messages.
+4. Confirm private content is not visible to unauthorized accounts.
+5. Check the browser developer console and the hosting logs for errors.
+6. Verify password reset and email verification if enabled.
+7. Test on both desktop and mobile.
+
+If something fails, compare the production environment variables with your local configuration, check backend redirect settings, review deployment logs, and rebuild after making corrections.
+
+### 6. Update NOOK later
+
+1. Open the project in VS Code.
+2. Make and test your changes.
+3. Run `npm run build`.
+4. Commit and push changes if using Git-based deployment, or rebuild and upload the new `dist` files if using manual deployment.
+5. Confirm the updated application works at its live address.
+
+### Deployment notes
+
+- A static frontend host does not replace a database or backend.
+- The chosen service may have bandwidth, build, storage, execution, or usage quotas.
+- A custom domain is optional; follow the domain setup instructions supplied by your chosen provider.
+- Do not enable paid plans or incur charges without reviewing the pricing and getting the account owner's approval.
+- Keep a backup of the database and document how to restore it before handling real users' data.
 
 ---
 
@@ -309,7 +341,7 @@ Note: This project is configured primarily for Vercel via `vercel.json`. Netlify
 
 - Never commit `.env` to Git (it's in `.gitignore`).
 - `.env.example` contains only placeholders — safe to commit.
-- In production (Vercel), set secrets in the **Environment Variables** dashboard, not in code.
+- In production, set frontend configuration in your hosting service's environment-variable settings, not in source code.
 - Never put the Supabase service_role key in the frontend. Only the `anon` key goes in `.env` (it's safe because RLS protects data).
 
 ---
@@ -367,32 +399,22 @@ Likely bottlenecks: realtime connections, file storage bandwidth, write-heavy ta
 
 ---
 
-## Which services have free-tier limits
+## Hosting limits and costs
 
-| Service | Free tier | Notes |
-|---------|-----------|-------|
-| Supabase | 500 MB database, 2 GB file storage, 1GB bandwidth, auth included | Not unlimited — monitor usage |
-| Vercel | Hobby tier: free for personal use | Bandwidth limits apply |
+Hosting and backend providers have different limits for compute, bandwidth, database size, storage, realtime connections, and build minutes. Review the current limits and pricing for the services you choose; do not assume any service is unlimited or permanently free.
 
----
-
-## What might cost money
-
-- Exceeding Supabase free-tier limits (database size, storage, bandwidth).
-- Custom domain purchases (via registrar).
-- Premium email/SMS providers if you integrate them later.
-- Higher Vercel plans for team/commercial use.
+Costs may include database usage, file storage, bandwidth, custom domains, email delivery, and higher hosting capacity. Do not enable paid services without approval.
 
 ---
 
 ## How to move from a prototype to production
 
-1. Enable email confirmations in Supabase Auth settings.
-2. Configure your production domain in Supabase redirect URLs.
-3. Set up Supabase automatic backups.
-4. Deploy to Vercel with production environment variables.
-5. Monitor usage in Supabase dashboard to stay within free tier.
-6. Consider a custom domain and HTTPS (automatic on Vercel).
+1. Enable and test email confirmation and password reset.
+2. Configure the production app address in the backend authentication redirect settings.
+3. Set up and test database backups and restoration.
+4. Configure production environment variables in the hosting service.
+5. Monitor database, storage, bandwidth, and realtime usage.
+6. Test authentication, privacy rules, uploads, and messaging before inviting real users.
 
 ---
 
